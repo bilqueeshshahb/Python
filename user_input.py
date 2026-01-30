@@ -1,0 +1,5 @@
+a=input("enter ist name:")
+b=input("enter 2nd name:")
+print(a)
+print(b)
+print("hello " +  a + " how r u?" +  b)
