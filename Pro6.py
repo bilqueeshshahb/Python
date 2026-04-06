@@ -1,15 +1,25 @@
-import matplotlib.pyplot as plt
+# 6) Write a program to delete the details of student in above table.
 
-ages = []
+import mysql.connector
 
-for i in range(50):
-    age = int(input(f"Enter age of student {i+1}: "))
-    ages.append(age)
+con = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="",
+    database="studentdb"
+)
 
-bins = [0,10,20,30,40,50,60,120]
+cur = con.cursor()
 
-plt.hist(ages, bins=bins)
-plt.title("Age Distribution")
-plt.xlabel("Age Groups")
-plt.ylabel("Frequency")
-plt.show()
+rollno = int(input("Enter roll number to delete: "))
+
+query = "DELETE FROM student WHERE rollno = %s"
+cur.execute(query, (rollno,))
+con.commit()
+
+if cur.rowcount > 0:
+    print("Student record deleted successfully.")
+else:
+    print("Student not found.")
+
+con.close()
