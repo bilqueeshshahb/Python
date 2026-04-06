@@ -1,18 +1,24 @@
-import matplotlib.pyplot as plt
+# 8) Write a program to load all the records from table and display only those details where names start with “N” and has length of 5 characters.
 
-courses = []
-students = []
 
-for i in range(5):
-    c = input("Enter course name: ")
-    s = int(input("Enter number of students: "))
-    courses.append(c)
-    students.append(s)
+import mysql.connector
 
-explode = [0]*5
-max_index = students.index(max(students))
-explode[max_index] = 0.2
+con = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="",
+    database="studentdb"
+)
 
-plt.pie(students, labels=courses, explode=explode, autopct='%1.1f%%')
-plt.title("Course Distribution")
-plt.show()
+cur = con.cursor()
+cur.execute("SELECT * FROM student")
+rows = cur.fetchall()
+
+print("Names starting with 'N' and having length 5:\n")
+
+for row in rows:
+    name = row[1]
+    if name.startswith("N") and len(name) == 5:
+        print(row)
+
+con.close()
