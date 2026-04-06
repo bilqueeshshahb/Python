@@ -1,14 +1,30 @@
-import matplotlib.pyplot as plt
+# 4) Write a program to insert the details of student in above table.
 
-years = [2020, 2021, 2022, 2023, 2024]
-profits = []
+import mysql.connector
 
-for i in range(5):
-    p = int(input(f"Enter profit for year {years[i]}: "))
-    profits.append(p)
+con = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="",
+    database="studentdb"
+)
 
-plt.plot(years, profits, marker='o')
-plt.title("Profit Over 5 Years")
-plt.xlabel("Year")
-plt.ylabel("Profit")
-plt.show()
+cur = con.cursor()
+
+rollno = int(input("Enter roll number: "))
+name = input("Enter name: ")
+gender = input("Enter gender: ")
+age = int(input("Enter age: "))
+email = input("Enter email: ")
+mobile = input("Enter mobile: ")
+city = input("Enter city: ")
+
+query = "INSERT INTO student (rollno, name, gender, age, email, mobile, city) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+values = (rollno, name, gender, age, email, mobile, city)
+
+cur.execute(query, values)
+con.commit()
+
+print("Student record inserted successfully.")
+
+con.close()
