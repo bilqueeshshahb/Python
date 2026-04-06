@@ -1,16 +1,26 @@
-import matplotlib.pyplot as plt
+# 7) Write a program to display only those records who have valid email address as their information. Use regular expression here.
 
-companies = []
-employees = []
+import mysql.connector
+import re
 
-for i in range(5):
-    name = input("Enter company name: ")
-    emp = int(input("Enter number of employees: "))
-    companies.append(name)
-    employees.append(emp)
+con = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="",
+    database="studentdb"
+)
 
-plt.bar(companies, employees)
-plt.title("Company Employee Size")
-plt.xlabel("Company")
-plt.ylabel("Employees")
-plt.show()
+cur = con.cursor()
+cur.execute("SELECT * FROM student")
+rows = cur.fetchall()
+
+pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+
+print("Students with valid email addresses:\n")
+
+for row in rows:
+    email = row[4]
+    if re.match(pattern, email):
+        print(row)
+
+con.close()
