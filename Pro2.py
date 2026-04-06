@@ -1,15 +1,21 @@
-import pandas as pd
+# 2) Write a program to display all the records of student table (make use of fetchone() method).
 
-df = pd.read_excel("students.xlsx")
 
-print("\nStudents from Rajkot:")
-print(df[df["City"] == "Rajkot"])
+import mysql.connector
 
-print("\nMale Students:")
-print(df[df["Gender"] == "Male"])
+con = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="",
+    database="studentdb"
+)
 
-print("\nMale Students from Rajkot:")
-print(df[(df["Gender"] == "Male") & (df["City"] == "Rajkot")])
+cur = con.cursor()
+cur.execute("SELECT * FROM student")
 
-print("\nStudents Age >= 20:")
-print(df[df["Age"] >= 20])
+rows = cur.fetchall()
+
+for row in rows:
+    print(row)
+
+con.close()
